@@ -1,13 +1,29 @@
 const { response } = require('express')
-const { validationResult } = require('express-validator')
+const bcrypt = require('bcryptjs')
+const User = require('../models/User')
 
+const newUser = async (req, res = response) => {
+    const { email, password } = req.body
 
-const newUser = (req, res = response) => {
+    let user = await User.findOne({ email })
+    if (user) {
+        return res.status(400).json({
+            ok: false,
+            message: 'This email has already been used',
+        })
+    }
+    user = new User(req.body)
+    //encrypt password
+    const salt = bcrypt.genSaltSync()
+    user.password = bcrypt.hashSync(password, salt)
+    
+    await user.save()
 
     res.status(201).json({
         ok: true,
         message: 'register',
-        user: req.body
+        uid: user.id,
+        name: user.name
     })
 }
 
