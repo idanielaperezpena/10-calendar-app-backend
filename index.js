@@ -8,11 +8,8 @@ const app = express()
 app.use(express.static('public'))
 
 //endPoints
-// app.get('/', (req, res) => {
-//     res.json({
-//         ok: true
-//     })
-// })
+app.use('/api/auth', require('./routes/auth'))
+
 
 //listen
 app.listen(process.env.PORT, () => {
