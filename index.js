@@ -20,6 +20,8 @@ app.use(express.json())
 
 //endPoints
 app.use('/api/auth', require('./routes/auth'))
+app.use('/api/events', require('./routes/events'))
+
 
 
 //listen
